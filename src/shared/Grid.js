@@ -24,7 +24,7 @@ class Grid extends Component {
     this.fetchRepos = this.fetchRepos.bind(this)
   }
   componentDidMount () {
-    if (!this.props.repos.length) {
+    if (!this.props.repos.length && !this.props.isFetching) {
       this.fetchRepos(this.props.match.params.id)
     }
   }
@@ -65,7 +65,7 @@ function mapStateToProps(state) {
   const { isFetching, lastUpdated, items: repos } = reposByLanguage[
       selectedLanguage
       ] || {
-    isFetching: true,
+    isFetching: false,
     items: []
   }
   return {

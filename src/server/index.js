@@ -3,7 +3,8 @@ import cors from "cors"
 import React from "react"
 import { renderToString } from "react-dom/server"
 import { StaticRouter, matchPath } from "react-router-dom"
-import serialize from "serialize-javascript"
+import { Provider } from 'react-redux'
+import configureStore from '.././store/configureStore'
 import App from '../shared/App'
 import routes from '../shared/routes'
 
@@ -20,12 +21,28 @@ app.get("*", (req, res, next) => {
     : Promise.resolve()
 
   promise.then((data) => {
-    const context = { data }
+    const initStore = {};
+    if (activeRoute.path && activeRoute.path !== '/') {
+      initStore.selectedLanguage = req.path.split('/').pop();
+      initStore.reposByLanguage = {
+        [initStore.selectedLanguage]: {
+          items: data,
+          isFetching: false,
+          lastUpdated: new Date()
+        }
+      };
+    }
+
+    const context = { initStore }
+
+    const store = configureStore(initStore)
 
     const markup = renderToString(
-      <StaticRouter location={req.url} context={context}>
-        <App />
-      </StaticRouter>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </Provider>
     )
 
     res.send(`
@@ -34,7 +51,7 @@ app.get("*", (req, res, next) => {
         <head>
           <title>SSR with RR</title>
           <script src="/bundle.js" defer></script>
-          <script>window.__INITIAL_DATA__ = ${serialize(data)}</script>
+          <script>window.__INITIAL_DATA__ = ${JSON.stringify(initStore)}</script>
         </head>
 
         <body>

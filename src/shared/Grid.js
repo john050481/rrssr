@@ -1,26 +1,30 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import {
+  selectLanguage,
+  fetchReposIfNeeded,
+  initStore
+} from '.././store/actions'
 
 class Grid extends Component {
   constructor(props) {
     super(props)
 
-    let repos
+    let initState
     if (__isBrowser__) {
-      repos = window.__INITIAL_DATA__
+      initState = window.__INITIAL_DATA__
       delete window.__INITIAL_DATA__
     } else {
-      repos = this.props.staticContext.data
+      initState = this.props.staticContext.data
     }
 
-    this.state = {
-      repos,
-      loading: repos ? false : true,
-    }
+    this.props.initStore(initState);
 
     this.fetchRepos = this.fetchRepos.bind(this)
   }
   componentDidMount () {
-    if (!this.state.repos) {
+    if (!this.props.repos.length) {
       this.fetchRepos(this.props.match.params.id)
     }
   }
@@ -30,20 +34,13 @@ class Grid extends Component {
     }
   }
   fetchRepos (lang) {
-    this.setState(() => ({
-      loading: true
-    }))
-
-    this.props.fetchInitialData(lang)
-      .then((repos) => this.setState(() => ({
-        repos,
-        loading: false,
-      })))
+    this.props.selectLanguage(lang);
+    this.props.fetchReposIfNeeded(lang);
   }
   render() {
-    const { loading, repos } = this.state
+    const { repos, isFetching } = this.props;
 
-    if (loading === true) {
+    if (isFetching === true) {
       return <p>LOADING</p>
     }
 
@@ -63,4 +60,28 @@ class Grid extends Component {
   }
 }
 
-export default Grid
+function mapStateToProps(state) {
+  const { selectedLanguage, reposByLanguage } = state
+  const { isFetching, lastUpdated, items: repos } = reposByLanguage[
+      selectedLanguage
+      ] || {
+    isFetching: true,
+    items: []
+  }
+  return {
+    selectedLanguage,
+    repos,
+    isFetching,
+    lastUpdated
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectLanguage : (language) => dispatch(selectLanguage(language)),
+    fetchReposIfNeeded : (language) => dispatch(fetchReposIfNeeded(language)),
+    initStore : (store) => dispatch(initStore(store))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Grid)

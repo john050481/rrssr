@@ -1,6 +1,32 @@
 var path = require('path')
 var webpack = require('webpack')
 var nodeExternals = require('webpack-node-externals')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const merge = require('webpack-merge');
+
+let commonConfig = {
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        /*
+                exclude: /(node_modules|bower_components)/,
+        */
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-object-rest-spread']
+          }
+        }
+      }
+    ]
+  },
+  plugins: []
+}
 
 var browserConfig = {
   entry: './src/browser/index.js',
@@ -10,9 +36,7 @@ var browserConfig = {
     publicPath: '/'
   },
   module: {
-    rules: [
-      { test: /\.(js)$/, use: 'babel-loader' },
-    ]
+    rules: []
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -31,9 +55,7 @@ var serverConfig = {
     publicPath: '/'
   },
   module: {
-    rules: [
-      { test: /\.(js)$/, use: 'babel-loader' }
-    ]
+    rules: []
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -42,4 +64,14 @@ var serverConfig = {
   ]
 }
 
-module.exports = [browserConfig, serverConfig]
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    commonConfig.plugins.push(new webpack.SourceMapDevToolPlugin({}));
+  }
+
+  if (argv.mode === 'production') {
+    //...
+  }
+
+  return [merge([browserConfig, commonConfig]), merge([serverConfig, commonConfig])];
+};

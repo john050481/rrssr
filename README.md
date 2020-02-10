@@ -31,11 +31,11 @@ window.__INITIAL_DATA__
 ```
 ### Начальное состояние стора, при рендере на сервере, мы получаем через:
 ```js
-const context = { initStoreData }
-```
-которая приходит, при рендере компонента Grid (renderToString(...)) как:
-```js
-staticContext //см. компонент Grid
+const store = configureStore(initStoreData)
+...
+renderToString(
+      <Provider store={store}>
+      ...
 ```
 ## В роутах (./src/shared/routes) нужно задать как инициализировать начальное стостояние:
 ```js

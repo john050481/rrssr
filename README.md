@@ -60,6 +60,10 @@ renderToString(
 if (__isBrowser__) {
     initStoreData = window.__INITIAL_DATA__
     ...
+const store = configureStore(initStoreData)
+...
+hydrate(
+  <Provider store={store}>
 ```
 ## В роутах нужно задать как инициализировать начальное стостояние:
 >./src/shared/routes.js

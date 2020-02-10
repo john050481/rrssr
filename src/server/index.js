@@ -35,7 +35,7 @@ app.get("*", (req, res, next) => {
       };
     }
 
-    const context = { initStoreData }
+    const context = { /*initStoreData*/ }
 
     const store = configureStore(initStoreData)
 

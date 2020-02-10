@@ -11,15 +11,15 @@ class Grid extends Component {
   constructor(props) {
     super(props)
 
-    let initState
+    let initStoreData
     if (__isBrowser__) {
-      initState = window.__INITIAL_DATA__
+      initStoreData = window.__INITIAL_DATA__
       delete window.__INITIAL_DATA__
     } else {
-      initState = this.props.staticContext.data
+      initStoreData = this.props.staticContext.data
     }
 
-    this.props.initStore(initState);
+    this.props.initStore(initStoreData);
 
     this.fetchRepos = this.fetchRepos.bind(this)
   }

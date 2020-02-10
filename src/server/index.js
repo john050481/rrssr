@@ -23,11 +23,11 @@ app.get("*", (req, res, next) => {
     : Promise.resolve()
 
   promise.then((data) => {
-    const initStore = {};
+    const initStoreData = {};
     if (activeRoute.path && activeRoute.path !== '/') {
-      initStore.selectedLanguage = req.path.split('/').pop();
-      initStore.reposByLanguage = {
-        [initStore.selectedLanguage]: {
+      initStoreData.selectedLanguage = req.path.split('/').pop();
+      initStoreData.reposByLanguage = {
+        [initStoreData.selectedLanguage]: {
           items: data,
           isFetching: false,
           lastUpdated: new Date()
@@ -35,9 +35,9 @@ app.get("*", (req, res, next) => {
       };
     }
 
-    const context = { initStore }
+    const context = { initStoreData }
 
-    const store = configureStore(initStore)
+    const store = configureStore(initStoreData)
 
     const markup = renderToString(
       <Provider store={store}>
@@ -53,7 +53,7 @@ app.get("*", (req, res, next) => {
         <head>
           <title>SSR with RR</title>
           <script src="/bundle.js" defer></script>
-          <script>window.__INITIAL_DATA__ = ${JSON.stringify(initStore)}</script>
+          <script>window.__INITIAL_DATA__ = ${JSON.stringify(initStoreData)}</script>
         </head>
 
         <body>

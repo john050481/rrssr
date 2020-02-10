@@ -3,22 +3,12 @@ import { connect } from 'react-redux'
 
 import {
   selectLanguage,
-  fetchReposIfNeeded,
-  initStore
+  fetchReposIfNeeded
 } from '.././store/actions'
 
 class Grid extends Component {
   constructor(props) {
     super(props)
-
-    let initStoreData
-    if (__isBrowser__) {
-      initStoreData = window.__INITIAL_DATA__
-      delete window.__INITIAL_DATA__
-      this.props.initStore(initStoreData);
-    } else { //if SERVER, renderToString
-      // /initStoreData = this.props.staticContext.initStoreData
-    }
 
     this.fetchRepos = this.fetchRepos.bind(this)
   }
@@ -78,8 +68,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
   return {
     selectLanguage : (language) => dispatch(selectLanguage(language)),
-    fetchReposIfNeeded : (language) => dispatch(fetchReposIfNeeded(language)),
-    initStore : (store) => dispatch(initStore(store))
+    fetchReposIfNeeded : (language) => dispatch(fetchReposIfNeeded(language))
   };
 };
 

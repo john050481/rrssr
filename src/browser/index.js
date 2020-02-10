@@ -6,7 +6,15 @@ import configureStore from '.././store/configureStore'
 import App from '../shared/App'
 import { BrowserRouter } from 'react-router-dom'
 
-const store = configureStore()
+let initStoreData
+if (__isBrowser__) {
+    initStoreData = window.__INITIAL_DATA__
+    delete window.__INITIAL_DATA__
+} else { //if SERVER (renderToString), сюда придет все что мы положим в переменную 'context', как staticContext
+    // /initStoreData = this.props.staticContext.initStoreData
+}
+
+const store = configureStore(initStoreData)
 
 hydrate(
   <Provider store={store}>

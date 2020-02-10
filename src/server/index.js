@@ -16,7 +16,7 @@ app.use(express.static("public"))
 app.get("*", (req, res, next) => {
   const activeRoute = routes.find((route) => matchPath(req.url, route)) || {}
 
-  if (!activeRoute.path) return next()
+//  if (!activeRoute.path) return next()
 
   const promise = activeRoute.fetchInitialData
     ? activeRoute.fetchInitialData(req.path)

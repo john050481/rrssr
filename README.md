@@ -25,17 +25,25 @@ npm run-script start-dev (npm run-script start-prod)
 ```
 ## Мы должны дважды инициализировать Store
 при рендере на сервере (когда мы генерим приложение и отдаем его в браузер) и на клиенте (когда в браузер приходит уже отрендеренная страница и данные для инициализации стора), т.е.
-### Начальное состояние стора передается в браузер (./src/browser/index.js) через глобальную переменную:
-```js
-window.__INITIAL_DATA__
-```
 ### Начальное состояние стора, при рендере на сервере, мы получаем через:
+`./src/server/index.js`
 ```js
 const store = configureStore(initStoreData)
 ...
 renderToString(
       <Provider store={store}>
       ...
+```
+и передаем его в браузер:
+```js
+<script>window.__INITIAL_DATA__ = ${JSON.stringify(initStoreData)}</script>
+```
+### Начальное состояние стора получаем в браузере через глобальную переменную:
+`./src/browser/index.js`
+```js
+if (__isBrowser__) {
+    initStoreData = window.__INITIAL_DATA__
+    ...
 ```
 ## В роутах (./src/shared/routes) нужно задать как инициализировать начальное стостояние:
 ```js

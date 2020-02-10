@@ -51,7 +51,7 @@ class Grid extends Component {
 
 function mapStateToProps(state) {
   const { selectedLanguage, reposByLanguage } = state
-  const { isFetching, lastUpdated, items: repos } = reposByLanguage[
+  const { isFetching, lastUpdated, items: repos = [] } = reposByLanguage[
       selectedLanguage
       ] || {
     isFetching: false,

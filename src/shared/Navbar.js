@@ -28,6 +28,11 @@ export default function Navbar () {
           </NavLink>
         </li>
       ))}
+      <li key={'NoMatch'}>
+        <NavLink activeStyle={{fontWeight: 'bold'}} to={`/NoMatch`}>
+          NoMatch
+        </NavLink>
+      </li>
     </ul>
   )
 }

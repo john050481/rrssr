@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import {
-  INIT_STORE,
   SELECT_LANGUAGE,
   REQUEST_REPOS,
   RECEIVE_REPOS
@@ -8,10 +7,6 @@ import {
 
 function selectedLanguage(state = '', action) {
   switch (action.type) {
-    case INIT_STORE:
-      return action.store.selectedLanguage
-          ? action.store.selectedLanguage
-          : state
     case SELECT_LANGUAGE:
       return action.language
     default:
@@ -44,10 +39,6 @@ function repos(
 
 function reposByLanguage(state = {}, action) {
   switch (action.type) {
-    case INIT_STORE:
-      return action.store.reposByLanguage
-          ? Object.assign({}, state, action.store.reposByLanguage)
-          : state
     case RECEIVE_REPOS:
     case REQUEST_REPOS:
       return Object.assign({}, state, {

@@ -2,17 +2,9 @@ import fetch from 'isomorphic-fetch'
 
 import { fetchPopularRepos } from '.././shared/api'
 
-export const INIT_STORE = 'INIT_STORE'
 export const REQUEST_REPOS = 'REQUEST_REPOS'
 export const RECEIVE_REPOS = 'RECEIVE_REPOS'
 export const SELECT_LANGUAGE = 'SELECT_LANGUAGE'
-
-export function initStore(store = {}) {
-  return {
-    type: INIT_STORE,
-    store
-  }
-}
 
 export function selectLanguage(language) {
   return {

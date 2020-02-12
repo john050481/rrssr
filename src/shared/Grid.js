@@ -10,7 +10,7 @@ function Grid (props) {
   const { repos, isFetching } = props;
 
   useEffect(() => {
-    props.selectLanguage(props.match.params.id);
+    if (props.match.params.id !== props.selectedLanguage) props.selectLanguage(props.match.params.id);
     //return () => { /*componentWillUnmount*/ };
   }, [props.match.params.id]);
 

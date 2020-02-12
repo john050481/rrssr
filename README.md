@@ -27,19 +27,16 @@ npm run-script start-dev (npm run-script start-prod)
 ### В переменной `initStoreData` содержится начальное состояние Стора:
 >./src/server/index.js
 ```js
-  promise.then((data) => {
-    const initStoreData = {};
-    if (activeRoute.path && activeRoute.path !== '/') {
-      initStoreData.selectedLanguage = req.path.split('/').pop();
-      initStoreData.reposByLanguage = {
-        [initStoreData.selectedLanguage]: {
-          items: data,
-          isFetching: false,
-          lastUpdated: new Date()
+      initStoreData = {//INIT STORE FROM SERVER
+        selectedLanguage,
+        reposByLanguage: {
+          [selectedLanguage]: {
+            items: data,
+            isFetching: false,
+            lastUpdated: Date.now()
+          }
         }
-      };
-    }
-
+      }
 ```
 ### Начальное состояние стора, при рендере на сервере, мы получаем через:
 >./src/server/index.js

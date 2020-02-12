@@ -10,12 +10,14 @@ function Grid (props) {
   const { repos, isFetching } = props;
 
   useEffect(() => {
-    if (props.match.params.id !== props.selectedLanguage) props.selectLanguage(props.match.params.id);
+    if (props.match.params.id !== props.selectedLanguage)
+      props.selectLanguage(props.match.params.id);
     //return () => { /*componentWillUnmount*/ };
   }, [props.match.params.id]);
 
   useEffect(() => {
-    if (!props.isFetching && props.selectedLanguage) props.fetchReposIfNeeded(props.selectedLanguage);
+    if (!props.isFetching && props.selectedLanguage)
+      props.fetchReposIfNeeded(props.selectedLanguage);
     //return () => { /*componentWillUnmount*/ };
   }, [props.selectedLanguage]);
 

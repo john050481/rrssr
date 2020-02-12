@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
@@ -64,3 +65,18 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
+
+Grid.propTypes = {
+  selectedLanguage: PropTypes.string,
+  repos: PropTypes.array,
+  isFetching: PropTypes.bool,
+  lastUpdated: PropTypes.number,
+  selectLanguage: PropTypes.func.isRequired,
+  fetchReposIfNeeded: PropTypes.func.isRequired
+};
+Grid.defaultProps = {
+  selectedLanguage: '',
+  repos: [],
+  isFetching: false,
+  lastUpdated: 0
+};

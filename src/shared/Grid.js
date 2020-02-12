@@ -67,6 +67,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
 
 Grid.propTypes = {
+  match: PropTypes.object.isRequired,
   selectedLanguage: PropTypes.string,
   repos: PropTypes.array,
   isFetching: PropTypes.bool,

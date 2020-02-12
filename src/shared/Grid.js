@@ -7,19 +7,19 @@ import {
 } from '.././store/actions'
 
 function Grid (props) {
-  const { repos, isFetching } = props;
+  const { repos, isFetching, match, selectedLanguage } = props;
 
   useEffect(() => {
-    if (props.match.params.id !== props.selectedLanguage)
-      props.selectLanguage(props.match.params.id);
+    if (match.params.id !== selectedLanguage)
+      props.selectLanguage(match.params.id);
     //return () => { /*componentWillUnmount*/ };
-  }, [props.match.params.id]);
+  }, [match.params.id]);
 
   useEffect(() => {
-    if (!props.isFetching && props.selectedLanguage)
-      props.fetchReposIfNeeded(props.selectedLanguage);
+    if (!isFetching && selectedLanguage)
+      props.fetchReposIfNeeded(selectedLanguage);
     //return () => { /*componentWillUnmount*/ };
-  }, [props.selectedLanguage]);
+  }, [selectedLanguage]);
 
   if (isFetching === true) {
     return <p>LOADING</p>

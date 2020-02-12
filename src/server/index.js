@@ -30,7 +30,7 @@ app.get("*", (req, res, next) => {
         [initStoreData.selectedLanguage]: {
           items: data,
           isFetching: false,
-          lastUpdated: new Date()
+          lastUpdated: Date.now()
         }
       };
     }
